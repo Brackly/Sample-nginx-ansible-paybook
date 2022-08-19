@@ -1,0 +1,25 @@
+---
+- name: nginx-playbook
+  hosts: webservers
+  become: true
+
+  tasks:
+  - name: install nginx
+    command: amazon-linux-extras install nginx1.12=latest -y
+    args:
+      creates: /sbin/nginx
+
+  - name: start nginx service
+    service: 
+      name: nginx
+      state: started
+
+  - name: copy a file to remote client
+    copy:
+      src: /Users/glowafterdark/desktop/bmi.py
+      dest: /home/ec2-user
+
+  - name: Run python script
+    command: python bmi.py
+
+
